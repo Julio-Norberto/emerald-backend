@@ -3,8 +3,6 @@ import cors from 'cors'
 
 import { userRoutes } from './routes/userRoutes.js'
 
-import './config/firebaseConnect.js'
-
 const app = express()
 const port = 3000
 
