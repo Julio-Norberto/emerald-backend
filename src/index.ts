@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import './config/db.js'
 
 import { userRoutes } from './routes/userRoutes.js'
 
