@@ -3,5 +3,6 @@ export interface IExpense {
   amount: number,
   type: string,
   date: Date,
-  description?: string
+  description?: string,
+  userId: string
 }
