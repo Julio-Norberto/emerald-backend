@@ -33,3 +33,28 @@ export const registerExpanse = async(req: Request, res: Response) => {
   }
 
 }
+
+export const searchUserExpanses = async(req: Request, res: Response) => {
+  const id = req.params.id
+
+  // Collects the id of the logged-in user through the token
+  const token = getToken(req)
+  const userToken = getUserByToken(token, res)
+
+  // Extracts the id from the object resulting from the previous operation
+  const userData: any = (await userToken).valueOf()
+  const userIdToken = userData.id
+
+  if(id !== userIdToken) {
+    return res.status(401).json({ message: "Acesso negado!" })
+  }
+
+  const userExpanses = await Expanse.find({ userId: id })
+
+  try {
+    return res.status(200).json({ data: userExpanses })
+  } catch(err) {
+    console.log(err)
+    return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
+  }
+}
