@@ -88,3 +88,29 @@ export const updateUserExpanse = async(req: Request, res: Response) => {
     return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
   }
 }
+
+export const removeUserExpanse = async(req: Request, res: Response) => {
+  const id = req.params.id
+
+  const token = getToken(req)
+  const userToken = getUserByToken(token, res)
+
+  // Extracts the id from the object resulting from the previous operation
+  const userData: any = (await userToken).valueOf()
+  const userIdToken = userData.id
+
+  const idTokenChecked = await Expanse.findOne({ userId: userIdToken })
+
+  if(!idTokenChecked) {
+    return res.status(401).json({ message: "Acesso negado!" })
+  }
+
+  try {
+    await Expanse.deleteOne({ _id: id, userId: userIdToken })
+    return res.status(200).json({ message: "Dados deletados com sucesso!" })
+  } catch(err) {
+    console.log(err)
+    return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
+  }
+
+}
