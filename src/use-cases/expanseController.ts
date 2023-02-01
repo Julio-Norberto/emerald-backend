@@ -58,3 +58,33 @@ export const searchUserExpanses = async(req: Request, res: Response) => {
     return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
   }
 }
+
+export const updateUserExpanse = async(req: Request, res: Response) => {
+  const id = req.params.id
+  const { amount, type, date, description } = req.body
+
+  if(!amount || !type || !date) {
+    return res.status(422).json({ message: "Por favor preencha todos os campos!" })
+  }
+
+  const token = getToken(req)
+  const userToken = getUserByToken(token, res)
+
+  // Extracts the id from the object resulting from the previous operation
+  const userData: any = (await userToken).valueOf()
+  const userIdToken = userData.id
+
+  const idTokenChecked = await Expanse.findOne({ userId: userIdToken })
+
+  if(!idTokenChecked) {
+    return res.status(401).json({ message: "Acesso negado!" })
+  }
+
+  try {
+    await Expanse.updateOne({ _id: id, userId: userIdToken }, { amount: amount, type: type, date: date, description: description })
+    return res.status(200).json({ message: "Dados atualizados com sucesso!" })
+  } catch(err) {
+    console.log(err)
+    return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
+  }
+}
