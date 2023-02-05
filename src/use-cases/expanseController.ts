@@ -4,10 +4,10 @@ import { getToken } from '../helpers/get-token.js'
 import { getUserByToken } from '../helpers/get-user-by-token.js'
 
 export const registerExpanse = async(req: Request, res: Response) => {
-  const { amount, type, date, description } = req.body
+  const { amount, type, expanseType, date, description } = req.body
 
   // Validations
-  if(!amount || !type || !date) {
+  if(!amount || !type || !date || !expanseType) {
     return res.status(422).json({ message: "Por favor preencha todos os campos!" })
   }
 
@@ -20,6 +20,7 @@ export const registerExpanse = async(req: Request, res: Response) => {
     amount,
     date,
     type,
+    expanseType,
     description,
     userId: id.id
   })
