@@ -11,8 +11,8 @@ const port = 3000
 app.use(express.json())
 app.use(cors())
 
-app.use('/api', userRoutes)
-app.use('/api', expanseRoutes)
+app.use('/', userRoutes)
+app.use('/', expanseRoutes)
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`)
