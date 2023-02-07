@@ -8,6 +8,8 @@ const expanse = new Schema<IExpense>({
   date: { type: String, required: true },
   description: { type: String, required: false },
   userId: { type: String, required: true }
+}, {
+  timestamps: true
 })
 
 export const Expanse = model<IExpense>('expanse', expanse)

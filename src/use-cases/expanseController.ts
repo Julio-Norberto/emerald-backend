@@ -131,7 +131,7 @@ export const fetchUserExpansesById = async(req: Request, res: Response) => {
   }
 
   try {
-    const data = await Expanse.find({ userId: userIdToken })
+    const data = await Expanse.find({ userId: userIdToken }).sort({ createdAt: -1 })
     return res.status(200).json(data)
   } catch(err) {
 
