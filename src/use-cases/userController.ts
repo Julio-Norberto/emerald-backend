@@ -7,9 +7,9 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 export const registerUser = async (req: Request, res: Response) => {
-  const { name, email, password, confirmPassword } = req.body
+  const { name, login, password, confirmPassword } = req.body
 
-  if(!name || !email || !password || !confirmPassword) {
+  if(!name || !login || !password || !confirmPassword) {
     return res.status(422).json({ message: "Por favor preencha todos os campos!" })
   }
 
@@ -17,7 +17,7 @@ export const registerUser = async (req: Request, res: Response) => {
     return res.status(422).json({ message: "as senhas divergem" })
   }
 
-  const userExists = await User.findOne({ email: email })
+  const userExists = await User.findOne({ login: login })
 
   if(userExists) {
     return res.status(422).json({ message: "Este e-mail já está cadastrado!" })
@@ -30,7 +30,7 @@ export const registerUser = async (req: Request, res: Response) => {
   // Create user
   const user = new User({
     name,
-    email,
+    login,
     password: hashPassword
   })
 
@@ -45,13 +45,13 @@ export const registerUser = async (req: Request, res: Response) => {
 }
 
 export const loginUser = async(req: Request, res: Response) => {
-  const { email, password } = req.body
+  const { login, password } = req.body
 
-  if(!email || !password) {
+  if(!login || !password) {
     return res.status(422).json({ message: "Por favor preencha todos os campos!" })
   }
 
-  const user = await User.findOne({ email: email })
+  const user = await User.findOne({ login: login })
 
   if(!user) {
     return res.status(404).json({ message: "Usuário não cadastrado" })
