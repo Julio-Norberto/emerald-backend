@@ -12,7 +12,9 @@
     "mongoose": "^6.9.0"
   },
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
