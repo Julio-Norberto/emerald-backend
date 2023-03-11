@@ -134,6 +134,30 @@ export const fetchUserExpansesById = async(req: Request, res: Response) => {
     const data = await Expanse.find({ userId: userIdToken }).sort({ createdAt: -1 })
     return res.status(200).json(data)
   } catch(err) {
+    return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
+  }
+}
 
+export const searchOneExpanse = async(req: Request, res: Response) => {
+  const id = req.params.id
+
+  const token = getToken(req)
+  const userToken = getUserByToken(token, res)
+
+  // Extracts the id from the object resulting from the previous operation
+  const userData: any = (await userToken).valueOf()
+  const userIdToken = userData.id
+
+  const idTokenChecked = await Expanse.findOne({ userId: userIdToken })
+
+  if(!idTokenChecked) {
+    return res.status(401).json({ message: "Acesso negado!" })
+  }
+
+  try {
+    const data = await Expanse.findOne({ _id: id })
+    return res.status(200).json(data)
+  } catch (err) {
+    return res.status(500).json({ message: "Algo deu errado. Tente novamente mais tarde!" })
   }
 }
